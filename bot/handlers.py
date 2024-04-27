@@ -1,6 +1,7 @@
 from telegram import Update
 from telegram.ext import CallbackContext
-# from model.predict import make_prediction  # Adjust import based on your project structure
+from model.predict import make_prediction
+from utils.helpers import format_prediction
 import logging
 
 # Enable logging
@@ -19,8 +20,10 @@ async def help_command(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text('Just send me some text and I will do sentiment analysis on it!')
 
 
-async def echo(update: Update, context: CallbackContext) -> None:
-    """Echo the user message."""
-    user_text = update.message.text
-    # prediction = make_prediction(user_text)  # Function to handle predictions
-    # update.message.reply_text(f'Prediction: {prediction}')
+async def handle_message(update: Update, context: CallbackContext) -> None:
+    text = update.message.text
+    # Make a prediction using the BERT model
+    prediction, confidence = make_prediction(text)
+    # Format the prediction into a response
+    response = f"This news is {'real' if prediction == 1 else 'fake'} with a confidence of {confidence:.2f}."
+    await update.message.reply_text(response)
