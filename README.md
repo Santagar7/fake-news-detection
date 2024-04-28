@@ -24,12 +24,30 @@ This repository contains the implementation of a fake news detection system usin
    - Extract the contents, ensuring the CSV files are accessible.
 
 ## Model Training
-Navigate to the `train/` directory within the project:
-**Model Training**
-   - Train the model using the training script. This will use the preprocessed data and save the trained model.
-   ```
-   fake_news_detection_bert.ipynb
-   ```
+
+To train the model on the fake news detection dataset, follow these steps:
+
+1. **Prepare the Environment**:
+   - Ensure you have Python 3.10+ installed on your system.
+   - Install the required dependencies using `pip install -r requirements.txt`.
+
+2. **Download the Dataset**:
+   - Download the dataset from Kaggle by instructions above.
+   
+3. **Train the Model**:
+   - Run the training process by executing the `training/main.py` script.
+   - The training process involves several steps managed by the script, including data loading, model initialization, training epochs, and validation.
+   - Training parameters like epochs, batch size, and model configuration are set in `training/config.py`.
+
+4. **Monitoring Training Progress**:
+   - Training and validation metrics such as loss and accuracy are printed after each epoch.
+   - The model with the best validation accuracy is saved as `best_model_state.bin`.
+
+5. **Evaluate the Model**:
+   - After training, the model's performance is evaluated on the test set to calculate the final accuracy and generate the confusion matrix.
+
+By following these steps, you will be able to train the model and evaluate its performance on the task of detecting fake news in textual content. The code is structured in a modular way to allow easy customization and scalability for future enhancements.
+
 
 ## Usage
 To run the fake news detection model on new data:
