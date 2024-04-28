@@ -1,7 +1,6 @@
 from telegram import Update
 from telegram.ext import CallbackContext
 from model.predict import make_prediction
-from utils.helpers import format_prediction
 import logging
 
 # Enable logging

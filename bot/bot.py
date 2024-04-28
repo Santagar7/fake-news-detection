@@ -5,7 +5,7 @@ from bot.handlers import start, help_command, handle_message
 
 def run() -> None:
     """Start the bot."""
-    # Create the Application and pass it your bot's token.
+    # Create the Application and pass it bot's token.
     application = Application.builder().token(TELEGRAM_TOKEN).build()
 
     # on different commands - answer in Telegram

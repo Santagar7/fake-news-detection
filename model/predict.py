@@ -1,41 +1,36 @@
 import torch
-from torch import softmax
-
-from model.bert_model import create_bert_model
+import torch.nn.functional as F
 from data.preprocessor import preprocess
+from transformers import BertTokenizer
+from model.FakeNewsClassifier import FakeNewsClassifier
 
-model_path = 'model/bert/bert.pth'
+# Load the model
+PRE_TRAINED_MODEL_NAME = 'bert-base-multilingual-cased'
+tokenizer = BertTokenizer.from_pretrained(PRE_TRAINED_MODEL_NAME)
+model = FakeNewsClassifier(2, PRE_TRAINED_MODEL_NAME)
 
 
-def load_model():
-    model = create_bert_model()
+def load_model(model_path):
     model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
-    model.eval()  # Set the model to inference mode
+    model.eval()  # Set the model to evaluation mode
     return model
 
 
-model = load_model()
+# Ensure the model is loaded and ready
+model = load_model('model/bert/best_model_state.bin')
 
 
 def make_prediction(text):
-    # Preprocess the text
-    inputs = preprocess(text, max_len=512)  # Make sure this matches training preprocessing
-
-    # Predict
-    prediction, confidence = make_prediction(inputs, model)
-    response = f"Prediction: {'Fake' if prediction == 0 else 'Real'} with confidence {confidence:.2f}"
-
-    inputs = preprocess(text)
+    inputs = preprocess(text, max_len=32)
+    input_ids = inputs['input_ids']
+    attention_mask = inputs['attention_mask']
 
     with torch.no_grad():
-        outputs = model(**inputs)
-        logits = outputs.logits
-        probabilities = softmax(logits, dim=1)
-        confidence, predicted_class = torch.max(probabilities, dim=1)
+        # Getting outputs directly from the model
+        outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+        # Applying softmax to convert to probabilities
+        probabilities = F.softmax(outputs, dim=1)
+        confidence, prediction = torch.max(probabilities, dim=1)
 
-    # Convert predicted class and confidence to Python scalars
-    predicted_class = predicted_class.item()
-    confidence = confidence.item()
-
-    return predicted_class, confidence
+    return prediction.item(), confidence.item()
 

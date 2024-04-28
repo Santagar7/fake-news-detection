@@ -1,6 +1,8 @@
 from transformers import BertTokenizer
 
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+# Pretrained model name for consistency
+PRE_TRAINED_MODEL_NAME = 'bert-base-multilingual-cased'
+tokenizer = BertTokenizer.from_pretrained(PRE_TRAINED_MODEL_NAME)
 
 
 def preprocess(text, max_len=512):
