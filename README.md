@@ -55,7 +55,7 @@ To run the fake news detection model on new data:
 python main.py
 ```
 
-Then go to Telegram bot [Bert Detector](https://t.me/f_news_detection_bot)
+Then go to Telegram bot [Bert Detector](https://t.me/bert_detector_bot)
 
 ## Technologies Used
 - Python 3.10+
